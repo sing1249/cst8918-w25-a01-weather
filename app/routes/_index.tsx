@@ -1,12 +1,12 @@
-import {json} from '@remix-run/node'
-import {useLoaderData} from '@remix-run/react'
-import {fetchWeatherData} from '../api-services/open-weather-service'
-import {capitalizeFirstLetter} from '../utils/text-formatting'
-import type {MetaFunction} from '@remix-run/node'
+import { json } from '@remix-run/node'
+import { useLoaderData } from '@remix-run/react'
+import { fetchWeatherData } from '../api-services/open-weather-service'
+import { capitalizeFirstLetter } from '../utils/text-formatting'
+import type { MetaFunction } from '@remix-run/node'
 
 export const meta: MetaFunction = () => {
   return [
-    {title: 'Remix Weather'},
+    { title: 'Remix Weather' },
     {
       name: 'description',
       content: 'A demo web app using Remix and OpenWeather API.'
@@ -32,11 +32,11 @@ export async function loader() {
     lon: location.lon,
     units: units
   })
-  return json({currentConditions: data.current})
+  return json({ currentConditions: data })
 }
 
 export default function CurrentConditions() {
-  const {currentConditions} = useLoaderData<typeof loader>()
+  const { currentConditions } = useLoaderData<typeof loader>()
   const weather = currentConditions.weather[0]
   return (
     <>
@@ -50,7 +50,7 @@ export default function CurrentConditions() {
         <h1>Remix Weather</h1>
         <p>
           For Algonquin College, Woodroffe Campus <br />
-          <span style={{color: 'hsl(220, 23%, 60%)'}}>
+          <span style={{ color: 'hsl(220, 23%, 60%)' }}>
             (LAT: {location.lat}, LON: {location.lon})
           </span>
         </p>
@@ -64,8 +64,8 @@ export default function CurrentConditions() {
           }}
         >
           <img src={getWeatherIconUrl(weather.icon)} alt="" />
-          <div style={{fontSize: '2rem'}}>
-            {currentConditions.temp.toFixed(1)}°C
+          <div style={{ fontSize: '2rem' }}>
+            {currentConditions.main.temp.toFixed(1)}°C
           </div>
         </div>
         <p
@@ -75,9 +75,9 @@ export default function CurrentConditions() {
           }}
         >
           {capitalizeFirstLetter(weather.description)}. Feels like{' '}
-          {currentConditions['feels_like'].toFixed(1)}°C.
+          {currentConditions['main']['feels_like'].toFixed(1)}°C.
           <br />
-          <span style={{color: 'hsl(220, 23%, 60%)', fontSize: '0.85rem'}}>
+          <span style={{ color: 'hsl(220, 23%, 60%)', fontSize: '0.85rem' }}>
             updated at{' '}
             {new Intl.DateTimeFormat('en-CA', {
               year: 'numeric',
@@ -99,7 +99,7 @@ export default function CurrentConditions() {
         <h2>Raw Data</h2>
         <pre>{JSON.stringify(currentConditions, null, 2)}</pre>
       </section>
-      <hr style={{marginTop: '2rem'}} />
+      <hr style={{ marginTop: '2rem' }} />
       <p>
         Learn how to customize this app. Read the{' '}
         <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
